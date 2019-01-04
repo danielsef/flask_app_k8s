@@ -276,7 +276,7 @@ minikube service app
 
 ## Exposing the Deployment through a Nodeport Service Resource
 ```
-kubectl run flaskapp3 --replicas=2 --labels="run=flaskapp3" --image=dev.docker.5xl/flask_app:1.0 --port=5000
+kubectl run flaskapp3 --replicas=2 --labels="run=flaskapp3" --image=$DOCKER_REPO/flask_app:1.0 --port=5000
 
 kubectl expose deployment flaskapp3 --type=NodePort --name=flaskapp3-service
 
