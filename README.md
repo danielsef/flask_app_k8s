@@ -299,6 +299,9 @@ Your service is accessible at:
 
 ## Forwarding an authenticated port with kubectl port-forward - access POD locally
 
+Link:
+https://docs.giantswarm.io/guides/accessing-services-from-the-outside/
+
 Forwarding a port with kubectl is fairly easy, however, it only works with single Pods and not with Services. Thus you need the exact pod name. You can either get this manually by running
 ```
 kubectl -n NAMESPACE get pods
