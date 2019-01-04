@@ -123,6 +123,8 @@ open http://localhost:8001/ui
 Use a label query to find all pods created by this Deployment manifest
 ```
 kubectl get pods -l run=app
+kubectl get pods --all-namespaces
+kubectl get pods -o wide
 ```
 
 Use `kubectl logs` to get container logs in the Pod created by the deployment using the console:
@@ -290,3 +292,29 @@ kubectl cluster-info
 Your service is accessible at:
   (IP):(port)
 
+
+
+
+
+
+## Forwarding an authenticated port with kubectl port-forward - access POD locally
+
+Forwarding a port with kubectl is fairly easy, however, it only works with single Pods and not with Services. Thus you need the exact pod name. You can either get this manually by running
+```
+kubectl -n NAMESPACE get pods
+and looking for the right pod name. Or by running following script.
+
+POD=$(kubectl get pods -n NAMESPACE --selector <label-key>=<label-value> \
+    -o template --template '{{range .items}}{{.metadata.name}} {{.status.phase}}{{"\n"}}{{end}}' \
+    | grep Running | head -1 | cut -f1 -d' ')
+```
+Be sure to have your Pod labeled accordingly so you can find it with the above selector.
+
+After this you can run
+```
+kubectl port-forward -n NAMESPACE ${POD} <local-port>:<pod-port>
+or to have it running in the background
+
+kubectl port-forward -n NAMESPACE $POD <local-port>:<pod-port> &
+```
+Now you can access your Pod locally via localhost:<local-port>.
